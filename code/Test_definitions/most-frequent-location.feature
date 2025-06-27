@@ -1,4 +1,4 @@
-Feature: CAMARA Most Frequent Location API, v0.1.0
+Feature: CAMARA Most Frequent Location API, v0.2.0-rc.1
     # Input to be provided by the implementation to the tester
     #
     # Implementation indications:
@@ -11,11 +11,11 @@ Feature: CAMARA Most Frequent Location API, v0.1.0
     # * A device object identifying a device commercialized by the implementation for which the service is not applicable, if any.
 
 
-    # References to OAS spec schemas refer to schemas specifies in most-frequent-location.yaml, version 0.1.0
+    # References to OAS spec schemas refer to schemas specifies in most-frequent-location.yaml, version 0.2.0-rc.1
 
     Background: Common verifyFrequentLocation setup
         Given an environment at "apiRoot"
-        And the resource "most-frequent-location/v0.1/verify"
+        And the resource "most-frequent-location/v0.2rc1/verify"
         And the header "Content-Type" is set to "application/json"
         And the header "Authorization" is set to a valid access token
         And the header "x-correlator" is set to a UUID value
@@ -87,17 +87,7 @@ Feature: CAMARA Most Frequent Location API, v0.1.0
         And the response property "$.code" is "INVALID_ARGUMENT"
         And the response property "$.message" contains a user friendly text
 
-    @verifyFrequentLocation_400.4_empty_device
-    Scenario: Request body with empty device object
-        Given the request body property "$.geoReference" is set to a valid geographical reference
-        And the request body property "$.device" is set to "{}"
-        When the request "verifyFrequentLocation" is sent
-        Then the response status code is 400
-        And the response property "$.status" is 400
-        And the response property "$.code" is "INVALID_ARGUMENT"
-        And the response property "$.message" contains a user friendly text
-
-    @verifyFrequentLocation_400.5_device_identifiers_schema_not_compliant
+    @verifyFrequentLocation_400.4_device_identifiers_schema_not_compliant
     # Test every type of identifier even if not supported by the implementation
     Scenario Outline: Some device identifier value does not comply with the schema
         Given the request body property "<device_identifier>" does not comply with the OAS schema at "<oas_spec_schema>"
@@ -114,7 +104,7 @@ Feature: CAMARA Most Frequent Location API, v0.1.0
             | $.device.ipv6Address             | /components/schemas/DeviceIpv6Address       |
             | $.device.networkAccessIdentifier | /components/schemas/NetworkAccessIdentifier |
 
-    @verifyFrequentLocation_400.6_out_of_range
+    @verifyFrequentLocation_400.5_out_of_range
     Scenario Outline: Out of Range
         Given a valid testing device supported by the service, identified by the token or provided in the request body
         And the request body property "$.geoReference" is set to a valid geographical reference
@@ -130,7 +120,7 @@ Feature: CAMARA Most Frequent Location API, v0.1.0
             | $.geoReference.latitude  | /components/schemas/Latitude  |
             | $.geoReference.longitude | /components/schemas/Longitude |
 
-    @verifyFrequentLocation_400.7_postal_code_not_valid
+    @verifyFrequentLocation_400.6_postal_code_not_valid
     Scenario: Postal Code not valid
         Given a valid testing device supported by the service, identified by the token or provided in the request body
         And the request body property "$.geoReference.postalCode" is set to a value that is compliant with the schema at "/components/schemas/PostalCode"
@@ -161,7 +151,7 @@ Feature: CAMARA Most Frequent Location API, v0.1.0
         When the request "verifyFrequentLocation" is sent
         Then the response status code is 401
         And the response property "$.status" is 401
-        And the response property "$.code" is "UNAUTHENTICATED" or "AUTHENTICATION_REQUIRED"
+        And the response property "$.code" is "UNAUTHENTICATED"
         And the response property "$.message" contains a user friendly text
 
     @verifyFrequentLocation_401.3_invalid_access_token
@@ -177,33 +167,19 @@ Feature: CAMARA Most Frequent Location API, v0.1.0
 
     # Errors 403
 
-    @verifyFrequentLocation_403.1_invalid_token_context
-    Scenario: Inconsistent access token context for the device
-        # To test this, a token have to be obtained for a different device
-        Given the request body property "$.device" is set to a valid testing device
-        And the header "Authorization" is set to a valid access token emitted for a different device
+    @verifyFrequentLocation_403.1_invalid_token_permissions
+    Scenario: Access token does not have the required permissions
+        Given the header "Authorization" is set to an access token without the required scope
         When the request "verifyFrequentLocation" is sent
-        Then the response status code is 403
+        Then the response status code is "403"
         And the response property "$.status" is 403
-        And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+        And the response property "$.code" is "PERMISSION_DENIED"
         And the response property "$.message" contains a user friendly text
 
 
     # Errors 404
 
-    @verifyFrequentLocation_404.1_device_not_found
-    # Typically with a 2-legged access token
-    Scenario: Device identifier not found
-        Given that the device cannot be identified from the access token
-        And the request body property "$.device" is compliant with the schema at "/components/schemas/Device" but does not identify a valid device
-        When the request "verifyFrequentLocation" is sent
-        Then the response status code is 404
-        And the response property "$.status" is 404
-        And the response property "$.code" is "DEVICE_NOT_FOUND"
-        And the response property "$.message" contains a user friendly text
-
-
-    @verifyFrequentLocation_404.2_information_not_available
+    @verifyFrequentLocation_404.1_information_not_available
     Scenario: Device information is not available
         Given a valid testing device supported by the service, identified by the token or provided in the request body 
         And the request body property "$.geoReference" is set to a valid geographical reference
@@ -215,44 +191,104 @@ Feature: CAMARA Most Frequent Location API, v0.1.0
         And the response property "$.message" contains a user friendly text
 
 
-    # Errors 422
+    # Error scenarios for management of input parameter device
 
-    @verifyFrequentLocation_422.1_unsupported_device_identifier
-    Scenario: None of the provided device identifiers are supported by the implementation
-        Given that some type of device identifiers are not supported by the implementation
-        And the request body property "$.device" only includes device identifiers not supported by the implementation
+    @verifyFrequentLocation_C01.01_device_empty
+    Scenario: The device value is an empty object
+        Given the header "Authorization" is set to a valid access token which does not identify a single device
+        And the request body property "$.device" is set to: {}
+        When the request "verifyFrequentLocation" is sent
+        Then the response status code is 400
+        And the response property "$.status" is 400
+        And the response property "$.code" is "INVALID_ARGUMENT"
+        And the response property "$.message" contains a user friendly text
+
+
+    @verifyFrequentLocation_C01.02_device_identifiers_not_schema_compliant
+    Scenario Outline: Some device identifier value does not comply with the schema
+        Given the header "Authorization" is set to a valid access token which does not identify a single device
+        And the request body property "<device_identifier>" does not comply with the OAS schema at "<oas_spec_schema>"
+        When the request "verifyFrequentLocation" is sent
+        Then the response status code is 400
+        And the response property "$.status" is 400
+        And the response property "$.code" is "INVALID_ARGUMENT"
+        And the response property "$.message" contains a user friendly text
+
+        Examples:
+        | device_identifier          | oas_spec_schema                             |
+        | $.device.phoneNumber       | /components/schemas/PhoneNumber             |
+        | $.device.ipv4Address       | /components/schemas/DeviceIpv4Addr          |
+        | $.device.ipv6Address       | /components/schemas/DeviceIpv6Address       |
+        | $.device.networkIdentifier | /components/schemas/NetworkAccessIdentifier |
+
+
+    # This scenario may happen e.g. with 2-legged access tokens, which do not identify a single device.
+    @verifyFrequentLocation_C01.03_device_not_found
+    Scenario: Some identifier cannot be matched to a device
+        Given the header "Authorization" is set to a valid access token which does not identify a single device
+        And the request body property "$.device" is compliant with the schema but does not identify a valid device
+        When the request "verifyFrequentLocation" is sent
+        Then the response status code is 404
+        And the response property "$.status" is 404
+        And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
+        And the response property "$.message" contains a user friendly text
+
+
+    @verifyFrequentLocation_C02.04_unnecessary_device
+    Scenario: Device not to be included when it can be deduced from the access token
+        Given the header "Authorization" is set to a valid access token identifying a device
+        And the request body property "$.device" is set to a valid device
         When the request "verifyFrequentLocation" is sent
         Then the response status code is 422
         And the response property "$.status" is 422
-        And the response property "$.code" is "UNSUPPORTED_DEVICE_IDENTIFIERS"
-        And the response property "$.message" contains a user friendly text
+        And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
+        And the response property "$.message" contains a user-friendly text
 
-    @verifyFrequentLocation_422.2_device_identifiers_mismatch
-    Scenario: Inconsistency between device identifiers not pointing to the same device
-        Given that at least 2 types of device identifiers are supported by the implementation
-        And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
-        When the request "verifyFrequentLocation" is sent
-        Then the response status code is 422
-        And the response property "$.status" is 422
-        And the response property "$.code" is "DEVICE_IDENTIFIERS_MISMATCH"
-        And the response property "$.message" contains a user friendly text
-    
-    @verifyFrequentLocation_422.3_device_not_applicable
-    Scenario: Service is not available for the provided device
-        Given that service is not supported for all devices commercialized by the operator
-        And the service is not applicable for the device identified by the token or provided in the request body
-        When the request "verifyFrequentLocation" is sent
-        Then the response status code is 422
-        And the response property "$.status" is 422
-        And the response property "$.code" is "DEVICE_NOT_APPLICABLE"
-        And the response property "$.message" contains a user friendly text
 
-    @verifyFrequentLocation_422.4_unidentifiable_device
-    Scenario: The device identifier is not included in the request and the device information cannot be derived from the 3-legged access token
-        Given the header "Authorization" is set to a valid 3-legged access token which does not identifiy a single device
+    @verifyFrequentLocation_C01.05_missing_device
+    Scenario: Device not included and cannot be deduced from the access token
+        Given the header "Authorization" is set to a valid access token which does not identify a single device
         And the request body property "$.device" is not included
         When the request "verifyFrequentLocation" is sent
         Then the response status code is 422
         And the response property "$.status" is 422
-        And the response property "$.code" is "UNIDENTIFIABLE_DEVICE"
+        And the response property "$.code" is "MISSING_IDENTIFIER"
+        And the response property "$.message" contains a user-friendly text
+
+
+    @verifyFrequentLocation_C01.06_unsupported_device
+    Scenario: None of the provided device identifiers is supported by the implementation
+        Given that some types of device identifiers are not supported by the implementation
+        And the header "Authorization" is set to a valid access token which does not identify a single device
+        And the request body property "$.device" only includes device identifiers not supported by the implementation
+        When the request "verifyFrequentLocation" is sent
+        Then the response status code is 422
+        And the response property "$.status" is 422
+        And the response property "$.code" is "UNSUPPORTED_IDENTIFIER"
+        And the response property "$.message" contains a user-friendly text
+
+
+    # When the service is only offered to certain types of devices or subscriptions, e.g. IoT, B2C, etc.
+    @verifyFrequentLocation_C01.07_device_not_supported
+    Scenario: Service not available for the device
+        Given that the service is not available for all devices commercialized by the operator
+        And a valid device, identified by the token or provided in the request body, for which the service is not applicable
+        When the request "verifyFrequentLocation" is sent
+        Then the response status code is 422
+        And the response property "$.status" is 422
+        And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+        And the response property "$.message" contains a user-friendly text
+
+
+    # Several identifiers provided but they do not identify the same device
+    # This scenario may happen with 2-legged access tokens, which do not identify a device
+    @verifyFrequentLocation_C01.08_device_identifiers_mismatch
+    Scenario: Device identifiers mismatch
+        Given the header "Authorization" is set to a valid access token which does not identify a single device
+        And at least 2 types of device identifiers are supported by the implementation
+        And the request body property "$.device" includes several identifiers, each of them identifying a valid but different device
+        When the request "verifyFrequentLocation" is sent
+        Then the response status code is 422
+        And the response property "$.status" is 422
+        And the response property "$.code" is "IDENTIFIER_MISMATCH"
         And the response property "$.message" contains a user friendly text
