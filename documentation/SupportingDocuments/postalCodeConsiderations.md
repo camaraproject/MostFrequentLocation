@@ -2,7 +2,7 @@
 
 ## Considerations about 'postalCode' and Country Name
 
-This document consolidates the discussion of the issue https://github.com/camaraproject/LocationInsights/issues/7 
+This document consolidates the discussion of the issue https://github.com/camaraproject/MostFrequentLocation/issues/7 
 
 ### Problem description
 Postal code is not globally unique. For example, 31000 is Pamplona in Spain and Toulouse in France. In most cases the country can be derived from the phone number, but there can be other more sophisticated cases.
