@@ -9,7 +9,7 @@
 
 # MostFrequentLocation
 
-Sandbox API Repository to describe, develop, document, and test the MostFrequentLocation Service API(s). The repository does not yet belong to a CAMARA Sub Project.
+Sandbox API Repository to describe, develop, document, and test the MostFrequentLocation Service API(s). The repository does not yet belong to a CAMARA Sub Project, but works together with DeviceVisitLocation as Location Insights.
 
 * API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/XjPe)
 
