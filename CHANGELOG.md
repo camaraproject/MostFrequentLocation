@@ -26,7 +26,7 @@ The API definition(s) are based on
 
 ## most-frequent-location v0.2.0-rc.1
 
-**most-frequent-location v0.2.0-rc.1 is the 1st public release of the Most Frequent Location API**
+**most-frequent-location v0.2.0-rc.1 is the first release candidate of the Most Frequent Location API**
 
 - API definition **with inline documentation**:
   - OpenAPI [YAML spec file](https://github.com/camaraproject/MostFrequentLocation/blob/r2.1/code/API_definitions/most-frequent-location.yaml)
