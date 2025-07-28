@@ -1,6 +1,6 @@
 # API Readiness Checklist
 
-Checklist for most-frequent-location v0.2.0-rc.1 in release r3.1
+Checklist for most-frequent-location v0.2.0-rc.1 in release r2.1
 
 | Nr | API release assets  | alpha | release-candidate |  public-release<br>initial | public-release<br> stable | Status | Reference information |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
@@ -16,7 +16,7 @@ Checklist for most-frequent-location v0.2.0-rc.1 in release r3.1
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y   |      |
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |   Y   | [link](/CHANGELOG.md) |
 | 12 | Previous public-release was certified        |   O   |         O         |    O    |    M   |   N   |      |
-| 13 | API description (for marketing)              |   O   |         O         |    M    |    M   |   Y   | [wiki link](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/81101339/Most+Frequent+Location+API+description) |
+| 13 | API description (for marketing)              |   O   |         O         |    M    |    M   |   Y   | [wiki link](https://lf-camaraproject.atlassian.net/wiki/x/G4LVB) |
 
 
 To fill the checklist:
