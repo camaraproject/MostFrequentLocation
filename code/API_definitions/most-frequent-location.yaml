@@ -75,13 +75,13 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  version: wip
+  version: 0.2.0
   x-camara-commonalities: 0.6
 externalDocs:
   description: Product documentation at CAMARA
   url: https://github.com/camaraproject/MostFrequentLocation
 servers:
-  - url: "{apiRoot}/most-frequent-location/vwip"
+  - url: "{apiRoot}/most-frequent-location/v0.2"
     variables:
       apiRoot:
         default: http://localhost:9091

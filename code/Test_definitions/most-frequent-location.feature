@@ -1,4 +1,4 @@
-Feature: CAMARA Most Frequent Location API, vwip
+Feature: CAMARA Most Frequent Location API, v0.2.0
   # Input to be provided by the implementation to the tester
   #
   # Implementation indications:
