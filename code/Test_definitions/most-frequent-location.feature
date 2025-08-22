@@ -44,7 +44,7 @@ Feature: CAMARA Most Frequent Location API, vwip
     When the request "verifyFrequentLocation" is sent
     Then the response status code is 200
     And the response contains the property "$.score" and its value represents the score of the location in the geoReference
-  
+
   @verifyFrequentLocation_03_success_with_postal_code
   Scenario: Successful response providing postal code
     Given a valid testing device supported by the service, identified by the token or provided in the request body
@@ -83,24 +83,7 @@ Feature: CAMARA Most Frequent Location API, vwip
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @verifyFrequentLocation_400.4_device_identifiers_schema_not_compliant
-  # Test every type of identifier even if not supported by the implementation
-  Scenario Outline: Some device identifier value does not comply with the schema
-    Given the request body property "<device_identifier>" does not comply with the OAS schema at "<oas_spec_schema>"
-    When the request "verifyFrequentLocation" is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-    Examples:
-      | device_identifier                | oas_spec_schema                             |
-      | $.device.phoneNumber             | /components/schemas/PhoneNumber             |
-      | $.device.ipv4Address             | /components/schemas/DeviceIpv4Addr          |
-      | $.device.ipv6Address             | /components/schemas/DeviceIpv6Address       |
-      | $.device.networkAccessIdentifier | /components/schemas/NetworkAccessIdentifier |
-
-  @verifyFrequentLocation_400.5_out_of_range
+  @verifyFrequentLocation_400.4_out_of_range
   Scenario Outline: Out of Range
     Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the request body property "$.geoReference" is set to a valid geographical reference
@@ -174,7 +157,7 @@ Feature: CAMARA Most Frequent Location API, vwip
 
   @verifyFrequentLocation_404.1_information_not_available
   Scenario: Device information is not available
-    Given a valid testing device supported by the service, identified by the token or provided in the request body 
+    Given a valid testing device supported by the service, identified by the token or provided in the request body
     And the request body property "$.geoReference" is set to a valid geographical reference
     And the geographical information of this device is not available or is not enough to calculate the score
     When the request "verifyFrequentLocation" is sent
@@ -206,11 +189,11 @@ Feature: CAMARA Most Frequent Location API, vwip
     And the response property "$.message" contains a user friendly text
 
     Examples:
-    | device_identifier          | oas_spec_schema                             |
-    | $.device.phoneNumber       | /components/schemas/PhoneNumber             |
-    | $.device.ipv4Address       | /components/schemas/DeviceIpv4Addr          |
-    | $.device.ipv6Address       | /components/schemas/DeviceIpv6Address       |
-    | $.device.networkIdentifier | /components/schemas/NetworkAccessIdentifier |
+      | device_identifier          | oas_spec_schema                             |
+      | $.device.phoneNumber       | /components/schemas/PhoneNumber             |
+      | $.device.ipv4Address       | /components/schemas/DeviceIpv4Addr          |
+      | $.device.ipv6Address       | /components/schemas/DeviceIpv6Address       |
+      | $.device.networkIdentifier | /components/schemas/NetworkAccessIdentifier |
 
   # This scenario may happen e.g. with 2-legged access tokens, which do not identify a single device.
   @verifyFrequentLocation_C01.03_device_not_found
