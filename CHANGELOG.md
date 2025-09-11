@@ -34,8 +34,16 @@ The API definition(s) are based on
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/MostFrequentLocation/r2.2/code/API_definitions/most-frequent-location.yaml&nocors)
   - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/MostFrequentLocation/r2.2/code/API_definitions/most-frequent-location.yaml)
 
-**Main changes**
-* No new changes included from version v0.2.0-rc.1
+### Changed
+- Update `device` error codes by @fernandopradocabrillo in https://github.com/camaraproject/MostFrequentLocation/pull/23
+- Error model defined in Spring25 meta-release by @fernandopradocabrillo in https://github.com/camaraproject/MostFrequentLocation/pull/23
+- Update test plan with latest changes aligning with commonalities by @fernandopradocabrillo in https://github.com/camaraproject/MostFrequentLocation/pull/23
+- Align `info.description` section with Commonalities by @fernandopradocabrillo in https://github.com/camaraproject/MostFrequentLocation/pull/23
+- Update `x-correlator` format by @fernandopradocabrillo in https://github.com/camaraproject/MostFrequentLocation/pull/23
+
+### Removed
+- AUTHENTICATION_REQUIRED and 5XX errors by @fernandopradocabrillo in https://github.com/camaraproject/MostFrequentLocation/pull/23
+- `INVALID_TOKEN_CONTEXT` error by @fernandopradocabrillo in https://github.com/camaraproject/MostFrequentLocation/pull/23
 
 **Full Changelog**: https://github.com/camaraproject/MostFrequentLocation/commits/r1.2...r2.2
 
