@@ -22,15 +22,25 @@ Sandbox API Repository to describe, develop, document, and test the MostFrequent
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: May 2024
 
+<!-- CAMARA:RELEASE-INFO:START -->
+<!-- This section is automatically maintained by the CAMARA project-administration tooling: https://github.com/camaraproject/project-administration -->
+
 ## Release Information
 
-* Note: Please be aware that the project will have updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. For best results, use the latest available release
+> [!NOTE]
+> Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* `NEW`:**The latest public release of CAMARA Most Frequent Location with v0.2.0 is [r2.2](https://github.com/camaraproject/MostFrequentLocation/tree/r2.2)**. The release Tag is [r2.2](https://github.com/camaraproject/MostFrequentLocation/releases/tag/r2.2).
-  - Contains v0.2.0 most-frequent-location API definition **with inline documentation**:
-    - [YAML spec file](https://github.com/camaraproject/MostFrequentLocation/blob/r2.2/code/API_definitions/most-frequent-location.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/MostFrequentLocation/r2.2/code/API_definitions/most-frequent-location.yaml&nocors)
-    - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/MostFrequentLocation/r2.2/code/API_definitions/most-frequent-location.yaml&nocors)
+* **NEW**: The latest public release is [r2.2](https://github.com/camaraproject/MostFrequentLocation/releases/tag/r2.2) (Fall25), with the following API versions:
+  * **most-frequent-location v0.2.0**
+  [[YAML]](https://github.com/camaraproject/MostFrequentLocation/blob/r2.2/code/API_definitions/most-frequent-location.yaml)
+  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/MostFrequentLocation/r2.2/code/API_definitions/most-frequent-location.yaml&nocors)
+  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/MostFrequentLocation/r2.2/code/API_definitions/most-frequent-location.yaml)
+* The latest public release is always available here: https://github.com/camaraproject/MostFrequentLocation/releases/latest
+* Other releases of this repository are available in https://github.com/camaraproject/MostFrequentLocation/releases
+* For changes see [CHANGELOG.md](https://github.com/camaraproject/MostFrequentLocation/blob/main/CHANGELOG.md)
+
+_The above section is automatically synchronized by CAMARA project-administration._
+<!-- CAMARA:RELEASE-INFO:END -->
 
 ## Contributing
 
